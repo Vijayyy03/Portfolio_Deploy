@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn, scrollTo } from "@/lib/utils";
 import { useState, useEffect } from "react";

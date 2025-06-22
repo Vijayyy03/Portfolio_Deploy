@@ -3,24 +3,20 @@ import { useEffect, useRef, Suspense, useState } from "react";
 import styles from "@/styles/Home.module.css";
 import { Button } from "@/components/ui/button";
 import {
-  ChevronRight,
   Code2,
   Frame,
   SearchCheck,
   Eye,
   MonitorSmartphone,
   Download,
-  Lightbulb,
-  BrainCircuit,
   Github,
-  ArrowUp,
 } from "lucide-react";
 import { TriangleDownIcon } from "@radix-ui/react-icons";
 import Spline from "@splinetool/react-spline";
 import Link from "next/link";
 import { cn, scrollTo } from "@/lib/utils";
 import Image from "next/image";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -117,7 +113,6 @@ export default function Home() {
   const [current, setCurrent] = useState<number>(0);
   const [count, setCount] = useState<number>(0);
   const [prevIndex, setPrevIndex] = useState<number>(0);
-  const [direction, setDirection] = useState<"next" | "prev">("next");
 
   // handle scroll
   useEffect(() => {
@@ -168,7 +163,6 @@ export default function Home() {
 
     const onSelect = () => {
       const newIndex = carouselApi.selectedScrollSnap();
-      setDirection(newIndex > prevIndex ? "next" : "prev");
       setPrevIndex(newIndex);
       setCurrent(newIndex + 1);
     };
@@ -303,7 +297,7 @@ export default function Home() {
               Python, and machine learning, currently pursuing an MCA at
               MIT-WPU. My journey began with a B.Sc. in Information
               Technology, where I built early web and data-driven projects.
-              I've since advanced into real-world applications—most recently,
+              I&apos;ve since advanced into real-world applications—most recently,
               interning at BARC, where I developed deep learning-based
               pipeline inspection tools. My experience spans academic research
               and industry-focused development, with a passion for solving
@@ -356,7 +350,7 @@ export default function Home() {
               Streamlined digital experiences.
             </h2>
             <p className="mt-1.5 text-base tracking-tight text-muted-foreground xl:text-lg">
-              I've worked on a variety of projects, from small websites to
+              I&apos;ve worked on a variety of projects, from small websites to
               large-scale web applications. Here are some of my favorites:
             </p>
 
@@ -364,7 +358,7 @@ export default function Home() {
             <div className="mt-14">
               <Carousel setApi={setCarouselApi} className="w-full">
                 <CarouselContent>
-                  {projects.map((project, i) => (
+                  {projects.map((project, _i) => (
                     <CarouselItem key={project.title} className="md:basis-1/2" style={{ perspective: '1500px' }}>
                       <motion.div
                         key={current}

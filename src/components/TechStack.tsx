@@ -17,7 +17,8 @@ const shuffleArray = (array: string[]) => {
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
     [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
+      array[randomIndex]!, array[currentIndex]!
+    ];
   }
 
   return array;
@@ -57,7 +58,7 @@ export default function TechStack() {
           </h2>
         </motion.div>
         <div className="flex max-w-4xl flex-wrap justify-center gap-4">
-          {shuffledTechs.map((tech, i) => (
+          {shuffledTechs.filter((tech): tech is string => typeof tech === "string").map((tech, i) => (
             <motion.div
               key={tech}
               custom={i}
