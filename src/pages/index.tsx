@@ -9,6 +9,11 @@ import {
   SearchCheck,
   Eye,
   MonitorSmartphone,
+  Download,
+  Lightbulb,
+  BrainCircuit,
+  Github,
+  ArrowUp,
 } from "lucide-react";
 import { TriangleDownIcon } from "@radix-ui/react-icons";
 import Spline from "@splinetool/react-spline";
@@ -24,45 +29,51 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import VanillaTilt from "vanilla-tilt";
 import { motion } from "framer-motion";
+import Journey from "@/components/Journey";
+import TechStack from "@/components/TechStack";
+import Certifications from "@/components/Certifications";
+import ContactForm from "@/components/ContactForm";
+import Testimonials from "@/components/Testimonials";
 
 const aboutStats = [
-  { label: "Years of experience", value: "3+" },
-  { label: "Technologies mastered", value: "5+" },
-  { label: "Companies worked with", value: "15+" },
+  { label: "Years of technical foundation", value: "3+" },
+  { label: "Technologies mastered", value: "8+" },
+  { label: "Projects & collaborations", value: "4+" },
 ];
 
 const projects = [
   {
-    title: "Unqueue",
-    description: "E-commerce platform for selling digital products",
-    image: "/assets/unqueue.webm",
-    href: "https://unqueue.shop/",
+    title: "Pipe Fault Detection System",
+    description:
+      "A real-time defect detection system for industrial pipelines, built using deep learning and computer vision. Achieved 95% precision across over 10,000 video frames, reducing manual inspection time by 30% and improving operational safety.",
+    image: "/assets/pipe.png",
+    href: "https://github.com/Vijayyy03",
+    techStack: ["Python", "OpenCV", "TensorFlow", "Flask", "React"],
   },
   {
-    title: "InfiniteVPS",
-    description: "High performance VPS hosting solution",
-    image: "/assets/infinitevps.webm",
-    href: "#",
+    title: "Crop Yield Prediction Model",
+    description:
+      "Developed a machine learning model trained on over a decade of agricultural data to predict crop yields with 92% accuracy. Deployed to help farmers make data-driven decisions, improving planning and boosting potential yields.",
+    image: "/assets/crop.png",
+    href: "https://github.com/Vijayyy03/crop_project",
+    techStack: ["Python", "Pandas", "Scikit-learn", "NumPy"],
   },
   {
-    title: "TranslateBot",
-    description: "Powerful Multilingual Translation Bot for Discord",
-    image: "/assets/translate_bot.webm",
-    href: "https://translatebot.app/",
+    title: "HireEase Job Portal",
+    description:
+      "A full-stack job portal supporting multiple user roles (employers and job seekers). Features include secure registration, job posting, and application management using a robust backend architecture.",
+    image: "/assets/HireEase_Job.png",
+    href: "https://github.com/Vijayyy03",
+    techStack: ["Java", "MySQL", "JDBC"],
   },
   {
-    title: "Wrona",
-    description: "Robotics-focused technology company",
-    image: "/assets/wrona.jpeg",
-    href: "https://www.wrona.com/",
-  },
-  {
-    title: "This website",
-    description: "My personal website",
-    image: "/assets/portfolio.webm",
-    href: "https://github.com/wendoj/portfolio",
+    title: "College Admission Predictor",
+    description:
+      "A web app that predicts students' chances of college admission based on caste and academic performance using a linear regression model. Designed with a clean UI in Streamlit for ease of use.",
+    image: "/assets/admission.png",
+    href: "https://github.com/Vijayyy03",
+    techStack: ["Python", "Streamlit"],
   },
 ];
 
@@ -105,6 +116,8 @@ export default function Home() {
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
   const [current, setCurrent] = useState<number>(0);
   const [count, setCount] = useState<number>(0);
+  const [prevIndex, setPrevIndex] = useState<number>(0);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
 
   // handle scroll
   useEffect(() => {
@@ -135,7 +148,6 @@ export default function Home() {
 
         if (li.getAttribute("href") === `#${current}`) {
           li.classList.add("nav-active");
-          console.log(li.getAttribute("href"));
         }
       });
     }
@@ -154,23 +166,18 @@ export default function Home() {
     setCount(carouselApi.scrollSnapList().length);
     setCurrent(carouselApi.selectedScrollSnap() + 1);
 
-    carouselApi.on("select", () => {
-      setCurrent(carouselApi.selectedScrollSnap() + 1);
-    });
-  }, [carouselApi]);
-
-  // card hover effect
-  useEffect(() => {
-    const tilt: HTMLElement[] = Array.from(document.querySelectorAll("#tilt"));
-    VanillaTilt.init(tilt, {
-      speed: 300,
-      glare: true,
-      "max-glare": 0.1,
-      gyroscope: true,
-      perspective: 900,
-      scale: 0.9,
-    });
-  }, []);
+    const onSelect = () => {
+      const newIndex = carouselApi.selectedScrollSnap();
+      setDirection(newIndex > prevIndex ? "next" : "prev");
+      setPrevIndex(newIndex);
+      setCurrent(newIndex + 1);
+    };
+    carouselApi.on("select", onSelect);
+    setPrevIndex(carouselApi.selectedScrollSnap());
+    return () => {
+      carouselApi.off("select", onSelect);
+    };
+  }, [carouselApi, prevIndex]);
 
   return (
     <Container>
@@ -184,16 +191,6 @@ export default function Home() {
           className="mt-40 flex w-full flex-col items-center xl:mt-0 xl:min-h-screen xl:flex-row xl:justify-between"
         >
           <div className={styles.intro}>
-            <div
-              data-scroll
-              data-scroll-direction="horizontal"
-              data-scroll-speed=".09"
-              className="flex flex-row items-center space-x-1.5"
-            >
-              <span className={styles.pill}>next.js</span>
-              <span className={styles.pill}>tailwindcss</span>
-              <span className={styles.pill}>typescript</span>
-            </div>
             <div>
               <h1
                 data-scroll
@@ -206,37 +203,70 @@ export default function Home() {
                   <br />
                 </span>
                 <span className="clash-grotesk text-gradient text-6xl 2xl:text-8xl">
-                  WendoJ.
+                  Vijay Jagdale.
                 </span>
               </h1>
               <p
                 data-scroll
                 data-scroll-enable-touch-speed
                 data-scroll-speed=".06"
-                className="mt-1 max-w-lg tracking-tight text-muted-foreground 2xl:text-xl"
+                className="mt-4 max-w-lg tracking-tight text-muted-foreground 2xl:text-xl"
               >
-                An experienced full-stack website developer with a passion for
-                crafting unique digital experiences.
+                I am a software engineer with strong fundamentals in Java,
+                Python, and SQL, along with expertise in Data Structures,
+                Algorithms, and Database Management. I have experience
+                developing scalable machine learning solutions, applying deep
+                learning and computer vision techniques, gained during an
+                internship at BARC. I am passionate about building high-quality
+                software products and solving real-world challenges through
+                technology.
               </p>
             </div>
-            <span
+            <motion.div
               data-scroll
-              data-scroll-enable-touch-speed
-              data-scroll-speed=".06"
-              className="flex flex-row items-center space-x-1.5 pt-6"
+              data-scroll-direction="horizontal"
+              data-scroll-speed=".09"
+              className="mt-8 flex flex-col items-start space-y-4"
             >
-              <Link href="mailto:wendoj@proton.me" passHref>
-                <Button>
-                  Get in touch <ChevronRight className="ml-1 h-4 w-4" />
+              <Link href="/assets/Vijay_Jagdale_Resume_2025.pdf" passHref>
+                <Button className="shadow-glow-primary">
+                  <Download className="mr-2 h-4 w-4" />
+                  Download Resume
                 </Button>
               </Link>
+              <div className="flex flex-row items-center space-x-1.5">
+                <Link
+                  href="https://www.linkedin.com/in/vijaysatishjagdale"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.pill}
+                >
+                  LinkedIn
+                </Link>
+                <Link
+                  href="https://github.com/Vijayyy03"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.pill}
+                >
+                  GitHub
+                </Link>
+                <Link
+                  href="mailto:jagdalevijay92@gmail.com"
+                  className={styles.pill}
+                >
+                  Email
+                </Link>
+              </div>
+            </motion.div>
+            <div className="mt-4">
               <Button
                 variant="outline"
                 onClick={() => scrollTo(document.querySelector("#about"))}
               >
                 Learn more
               </Button>
-            </span>
+            </div>
 
             <div
               className={cn(
@@ -269,19 +299,15 @@ export default function Home() {
             className="my-14 flex max-w-6xl flex-col justify-start space-y-10"
           >
             <h2 className="py-16  pb-2 text-3xl font-light leading-normal tracking-tighter text-foreground xl:text-[40px]">
-              I&apos;m an experienced full-stack developer proficient in{" "}
-              <Link
-                href="https://create.t3.gg/"
-                target="_blank"
-                className="underline"
-              >
-                TypeScript, Tailwind, and Next.js
-              </Link>{" "}
-              since 2021. My experience spans from startups to mid-sized
-              companies, where I&apos;ve been instrumental in the entire product
-              design process; from ideation and wireframing, through
-              prototyping, to the delivery of the final product, all while
-              efficiently collaborating with cross-functional teams.
+              I&apos;m a software engineer with a strong foundation in Java,
+              Python, and machine learning, currently pursuing an MCA at
+              MIT-WPU. My journey began with a B.Sc. in Information
+              Technology, where I built early web and data-driven projects.
+              I've since advanced into real-world applications—most recently,
+              interning at BARC, where I developed deep learning-based
+              pipeline inspection tools. My experience spans academic research
+              and industry-focused development, with a passion for solving
+              impactful problems using code and AI.
             </h2>
             <div className="grid grid-cols-2 gap-8 xl:grid-cols-3">
               {aboutStats.map((stat) => (
@@ -301,6 +327,10 @@ export default function Home() {
           </div>
         </section>
 
+        <Journey />
+
+        <TechStack />
+
         {/* Projects */}
         <section id="projects" data-scroll-section>
           {/* Gradient */}
@@ -310,7 +340,7 @@ export default function Home() {
               aria-hidden="true"
             >
               <div
-                className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-primary via-primary to-secondary opacity-10 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+                className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-primary via-purple-500 to-pink-500 opacity-10 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
                 style={{
                   clipPath:
                     "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
@@ -326,7 +356,7 @@ export default function Home() {
               Streamlined digital experiences.
             </h2>
             <p className="mt-1.5 text-base tracking-tight text-muted-foreground xl:text-lg">
-              I&apos;ve worked on a variety of projects, from small websites to
+              I've worked on a variety of projects, from small websites to
               large-scale web applications. Here are some of my favorites:
             </p>
 
@@ -334,18 +364,26 @@ export default function Home() {
             <div className="mt-14">
               <Carousel setApi={setCarouselApi} className="w-full">
                 <CarouselContent>
-                  {projects.map((project) => (
-                    <CarouselItem key={project.title} className="md:basis-1/2">
-                      <Card id="tilt">
-                        <CardHeader className="p-0">
-                          <Link href={project.href} target="_blank" passHref>
+                  {projects.map((project, i) => (
+                    <CarouselItem key={project.title} className="md:basis-1/2" style={{ perspective: '1500px' }}>
+                      <motion.div
+                        key={current}
+                        whileHover={{ scale: 1.05 }}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ duration: 0.5, ease: 'easeInOut' }}
+                        style={{ transformStyle: 'preserve-3d' }}
+                      >
+                        <Card className="group relative overflow-hidden rounded-lg">
+                          <CardHeader className="p-0">
                             {project.image.endsWith(".webm") ? (
                               <video
                                 src={project.image}
                                 autoPlay
                                 loop
                                 muted
-                                className="aspect-video h-full w-full rounded-t-md bg-primary object-cover"
+                                className="aspect-video h-full w-full bg-primary object-cover"
                               />
                             ) : (
                               <Image
@@ -354,17 +392,44 @@ export default function Home() {
                                 width={600}
                                 height={300}
                                 quality={100}
-                                className="aspect-video h-full w-full rounded-t-md bg-primary object-cover"
+                                className="aspect-video h-full w-full bg-primary object-cover"
                               />
                             )}
-                          </Link>
-                        </CardHeader>
-                        <CardContent className="absolute bottom-0 w-full bg-background/50 backdrop-blur">
-                          <CardTitle className="border-t border-white/5 p-4 text-base font-normal tracking-tighter">
-                            {project.description}
-                          </CardTitle>
-                        </CardContent>
-                      </Card>
+                            {/* Always show project title */}
+                            <div className="absolute left-0 bottom-0 z-10 w-full bg-gradient-to-t from-black/70 to-transparent px-4 py-2 transition-opacity duration-300 group-hover:opacity-0">
+                              <span className="text-base font-semibold text-white drop-shadow-sm">{project.title}</span>
+                            </div>
+                          </CardHeader>
+
+                          {/* Hover Overlay */}
+                          <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 p-6 text-center opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                            <CardTitle className="text-lg font-semibold tracking-tight text-white">
+                              {project.title}
+                            </CardTitle>
+                            <p className="mt-2 text-sm text-white/80">
+                              {project.description}
+                            </p>
+                            <div className="mt-4 flex flex-wrap justify-center gap-2">
+                              {project.techStack.map((tech) => (
+                                <span
+                                  key={tech}
+                                  className="rounded-full bg-primary/20 px-3 py-1 text-xs font-medium text-white"
+                                >
+                                  {tech}
+                                </span>
+                              ))}
+                            </div>
+                            <Link
+                              href={project.href}
+                              target="_blank"
+                              passHref
+                              className="mt-4 text-white/80 transition-colors hover:text-primary hover:drop-shadow-glow-primary"
+                            >
+                              <Github className="h-6 w-6" />
+                            </Link>
+                          </div>
+                        </Card>
+                      </motion.div>
                     </CarouselItem>
                   ))}
                 </CarouselContent>
@@ -381,6 +446,8 @@ export default function Home() {
           </div>
         </section>
 
+        <Certifications />
+
         {/* Services */}
         <section id="services" data-scroll-section>
           <div
@@ -391,38 +458,36 @@ export default function Home() {
           >
             <motion.div
               initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 1,
                 staggerChildren: 0.5,
               }}
               viewport={{ once: true }}
-              className="grid items-center gap-1.5 md:grid-cols-2 xl:grid-cols-3"
+              className="grid items-stretch gap-8 md:grid-cols-2 xl:grid-cols-3"
             >
-              <div className="flex flex-col py-6 xl:p-6">
-                <h2 className="text-4xl font-medium tracking-tight">
+              <div className="flex flex-col justify-center py-6 xl:p-6">
+                <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
                   Need more info?
                   <br />
-                  <span className="text-gradient clash-grotesk tracking-normal">
-                    I got you.
-                  </span>
+                  <span className="text-gradient">I got you.</span>
                 </h2>
-                <p className="mt-2 tracking-tighter text-secondary-foreground">
+                <p className="mt-6 max-w-md text-muted-foreground">
                   Here are some of the services I offer. If you have any
                   questions, feel free to reach out.
                 </p>
               </div>
-              {services.map((service) => (
+              {services.map(({ service, description, icon: Icon }) => (
                 <div
-                  key={service.service}
-                  className="flex flex-col items-start rounded-md bg-white/5 p-14 shadow-md backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:bg-white/10 hover:shadow-md"
+                  key={service}
+                  className="flex h-full flex-col items-start justify-between rounded-lg bg-secondary/30 p-8 shadow-lg transition-transform hover:scale-105 hover:shadow-primary/30"
                 >
-                  <service.icon className="my-6 text-primary" size={20} />
-                  <span className="text-lg tracking-tight text-foreground">
-                    {service.service}
+                  <Icon className="mb-4 h-8 w-8 text-primary/70" />
+                  <span className="text-lg font-semibold tracking-tight text-foreground">
+                    {service}
                   </span>
-                  <span className="mt-2 tracking-tighter text-muted-foreground">
-                    {service.description}
+                  <span className="mt-2 text-sm tracking-tighter text-muted-foreground">
+                    {description}
                   </span>
                 </div>
               ))}
@@ -430,27 +495,38 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Contact */}
-        <section id="contact" data-scroll-section className="my-64">
-          <div
-            data-scroll
-            data-scroll-speed=".4"
-            data-scroll-position="top"
-            className="flex flex-col items-center justify-center rounded-lg bg-gradient-to-br from-primary/[6.5%] to-white/5 px-8 py-16 text-center xl:py-24"
+        {/* Testimonials */}
+        <Testimonials />
+
+        {/* Let's work together */}
+        <section
+          id="let's-work-together"
+          data-scroll-section
+          className="relative mx-auto mb-16 max-w-4xl overflow-hidden rounded-lg bg-secondary/30 shadow-lg transition-all hover:shadow-glow-primary"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="relative isolate px-6 py-24 sm:px-24 sm:py-32 lg:px-8"
           >
-            <h2 className="text-4xl font-medium tracking-tighter xl:text-6xl">
-              Let&apos;s work{" "}
-              <span className="text-gradient clash-grotesk">together.</span>
+            <h2 className="mx-auto max-w-2xl text-center text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              Let&apos;s work <span className="text-[#A7A7FF]">together.</span>
             </h2>
-            <p className="mt-1.5 text-base tracking-tight text-muted-foreground xl:text-lg">
-              I&apos;m currently available for freelance work and open to
-              discussing new projects.
+            <p className="mx-auto mt-4 max-w-xl text-center text-lg leading-8 text-muted-foreground">
+              I&apos;m currently available for freelance work and open to work
             </p>
-            <Link href="mailto:wendoj@proton.me" passHref>
-              <Button className="mt-6">Get in touch</Button>
-            </Link>
-          </div>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <a href="#contact">
+                <Button className="bg-[#A7A7FF] text-black hover:bg-[#A7A7FF]/80">Get in touch</Button>
+              </a>
+            </div>
+          </motion.div>
         </section>
+
+        {/* Contact form */}
+        <ContactForm />
       </div>
     </Container>
   );
@@ -479,8 +555,8 @@ function Gradient() {
               y2="474.645"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stopColor="#7980fe" />
-              <stop offset={1} stopColor="#f0fff7" />
+              <stop stopColor="#945DD6" />
+              <stop offset={1} stopColor="#FF0080" />
             </linearGradient>
           </defs>
         </svg>
@@ -506,8 +582,8 @@ function Gradient() {
               y2="474.645"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stopColor="#9A70FF" />
-              <stop offset={1} stopColor="#838aff" />
+              <stop stopColor="#EA00D9" />
+              <stop offset={1} stopColor="#711c91" />
             </linearGradient>
           </defs>
         </svg>

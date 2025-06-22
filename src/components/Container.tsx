@@ -39,8 +39,13 @@ const variants = {
 const navLinks = [
   { href: "#home", text: "Home" },
   { href: "#about", text: "About" },
+  { href: "#journey", text: "Journey" },
+  { href: "#tech", text: "Tech Stack" },
   { href: "#projects", text: "Projects" },
+  { href: "#certifications", text: "Certifications" },
   { href: "#services", text: "Services" },
+  { href: "#testimonials", text: "Testimonials" },
+  { href: "#contact", text: "Contact" },
 ];
 
 function handleClick(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
@@ -56,7 +61,7 @@ function handleClick(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
 function NavItem(props: NavProps) {
   return (
     <motion.li
-      className={props.className}
+      className={`${props.className} group`}
       variants={variants}
       custom={props.i}
       initial="hidden"
@@ -66,9 +71,13 @@ function NavItem(props: NavProps) {
       <a
         href={props.href}
         onClick={handleClick}
-        className={cn(props.i === 0 && "nav-active", "nav-link")}
+        className={cn(
+          props.i === 0 && "nav-active",
+          "nav-link relative rounded-md px-2 py-2",
+        )}
       >
-        {props.text}
+        <span className="relative z-10">{props.text}</span>
+        <span className="absolute left-0 top-0 h-full w-full origin-center scale-x-0 rounded-md bg-primary/20 transition-transform duration-300 ease-in-out group-hover:scale-x-100" />
       </a>
     </motion.li>
   );
@@ -162,9 +171,7 @@ export default function Container(props: ContainerProps) {
             <CrossIcon data-hide={!isOpen} />
           </button>
         </div>
-        <Link href="/">
-          <span className="text-lg font-semibold">wendo</span>
-        </Link>
+        
 
         {/* Desktop menu */}
         <ul className={styles["desktop-nav"]}>
